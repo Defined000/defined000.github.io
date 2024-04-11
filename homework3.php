@@ -1,3 +1,4 @@
+<html>
 <h1>Homework3</h1>
 <form method="GET" action="">
 1번<br>
@@ -249,7 +250,7 @@ if(isset($_POST['rectp-width']) && isset($_POST['rectp-length']) && isset($_POST
         echo "<p>구의 체적은 $volume 입니다.</p>";
     }
 ?>
-
+</html>
 
 
 
