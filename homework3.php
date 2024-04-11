@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <h1>Homework3</h1>
 <form method="GET" action="">
