@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>homework5</title>
+    <style>
+        .input-wrap {
+            width: 960px;
+            margin: 0 auto;
+        }
+        h1 { text-align: center; }
+        th, td { text-align: center; }
+        table {
+            border: 1px solid #000;
+            margin: 0 auto;
+        }
+        td, th {
+            border: 1px solid #ccc;
+        }
+        a { text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="input-wrap">
+        <form id = "ticketForm">
+            <p>고객성명 <input type="text" name="name" required> <input type="submit" name="submit" value="합계"></p>
+            <p id = "timeDisplay"></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>구분</th>
+                        <th colspan="2">어린이</th>
+                        <th colspan="2">어른</th>
+                        <th>비고</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>입장권</td>
+                        <td>7,000</td>
+                        <td>
+                            <select name="childpass" id="childpass" onchange="calculate()">
+                                <option value="0" selected>0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </td>
+                        <td>10,000</td>
+                        <td>
+                            <select name="adultpass" id="adultpass" onchange="calculate()">
+                                <option value="0" selected>0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </td>
+                        <td>입장</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>BIG3</td>
+                        <td>12,000</td>
+                        <td>
+                            <select name="childBIG3" id="childBIG3" onchange="calculate()">
+                                <option value="0" selected>0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </td>
+                        <td>16,000</td>
+                        <td>
+                            <select name="adultBIG3" id="adultBIG3" onchange="calculate()">
+                                <option value="0" selected>0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </td>
+                        <td>입장+놀이3종</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>자유이용권</td>
+                        <td>21,000</td>
+                        <td>
+                            <select name="childfreepass" id="childfreepass" onchange="calculate()">
+                                <option value="0" selected>0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </td>
+                        <td>26,000</td>
+                        <td>
+                            <select name="adultfreepass" id="adultfreepass" onchange="calculate()">
+                                <option value="0" selected>0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </td>
+                        <td>입장+놀이자유</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>연간이용권</td>
+                        <td>70,000</td>
+                        <td>
+                            <select name="childyearpass" id="childyearpass" onchange="calculate()">
+                                <option value="0" selected>0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </td>
+                        <td>90,000</td>
+                        <td>
+                            <select name="adultyearpass" id="adultyearpass" onchange="calculate()">
+                                <option value="0" selected>0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </td>
+                        <td>입장+놀이자유</td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        <p id="price"></p>
+    </div>
+</body>
+<script>
+    startTime();
+
+    var ticket_prices = new Array();
+    ticket_prices["childpass"] = 7000;
+    ticket_prices["childBIG3"] = 12000;
+    ticket_prices["childfreepass"] = 21000;
+    ticket_prices["childyearpass"] = 70000;
+    ticket_prices["adultpass"] = 10000;
+    ticket_prices["adultBIG3"] = 16000;
+    ticket_prices["adultfreepass"] = 26000;
+    ticket_prices["adultyearpass"] = 90000;
+
+    var selectedTickets = new Array();
+    selectedTickets["childpass"] = document.getElementById("childpass");
+    selectedTickets["childBIG3"] = document.getElementById("childBIG3");
+    selectedTickets["childfreepass"] = document.getElementById("childfreepass");
+    selectedTickets["childyearpass"] = document.getElementById("childyearpass");
+    selectedTickets["adultpass"] = document.getElementById("adultpass");
+    selectedTickets["adultBIG3"] = document.getElementById("adultBIG3");
+    selectedTickets["adultfreepass"] = document.getElementById("adultfreepass");
+    selectedTickets["adultyearpass"] = document.getElementById("adultyearpass");
+
+    function startTime() {
+        const today = new Date();
+        let y = today.getFullYear();
+        let M = today.getMonth() + 1;
+        let d = today.getDate();
+        let h = today.getHours();
+        let m = today.getMinutes();
+        let s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById('timeDisplay').innerHTML = y + "년 " + M + "월 " + d + "일 " + h + ":" + m + ":" + s;
+        setTimeout(startTime, 1000);
+    }
+
+    function checkTime(i)
+    {
+        if (i < 10) {i = "0" + i};
+        return i;
+    }
+
+    function calculate(){
+        var ticketPrice = 0;
+        for (var i in selectedTickets)
+        {
+            ticketPrice += ticket_prices[i] * selectedTickets[i].value;
+            document.getElementById("price").innerHTML = ticketPrice + "원";
+        }
+    }
+</script>
+</html>
